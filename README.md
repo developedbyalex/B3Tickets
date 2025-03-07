@@ -3,7 +3,6 @@
 <div align="center">
 
 [![Discord](https://img.shields.io/discord/1225531121815781376?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.byalex.gg/)
-[![GitHub](https://img.shields.io/github/license/developedbyalex/B3Tickets?color=7289da&label=License&logo=github&logoColor=white)](https://github.com/developedbyalex/B3Tickets/blob/main/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/developedbyalex/B3Tickets?color=7289da&label=Stars&logo=github&logoColor=white)](https://github.com/developedbyalex/B3Tickets/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/developedbyalex/B3Tickets?color=7289da&label=Issues&logo=github&logoColor=white)](https://github.com/developedbyalex/B3Tickets/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/developedbyalex/B3Tickets?color=7289da&label=Pull%20Requests&logo=github&logoColor=white)](https://github.com/developedbyalex/B3Tickets/pulls)
