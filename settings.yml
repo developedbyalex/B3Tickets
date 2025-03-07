@@ -1,0 +1,124 @@
+##############################################################################
+#                                                                            #
+#                               B3Tickets                                    #
+#                                By Lofi                                     #
+#                                                                            #
+##############################################################################
+
+##############################################################################
+#                               Bot Settings                                 #
+#                      These are the settings for the bot.                   #
+##############################################################################
+
+token: 'YOUR_BOT_TOKEN'
+mongodbAtlas: 'YOUR_MONGODB_ATLAS_URI'
+ticketCategory: '123456789012345678'  # This is the category where tickets will be created
+transcripts:
+  enabled: true # This is whether transcripts are enabled or not
+  channel: '123456789012345678' # This is the channel ID where transcripts will be sent
+  footer: 'B3Tickets' # This is the footer of the transcript
+logging:
+  enabled: true # This is whether logging is enabled or not
+  channel: '123456789012345678' # This is the channel ID where logs will be sent
+status:
+  enabled: true # This is whether status is enabled or not
+  status: 'Playing' # This is the status of the bot. OPTIONS: 'Playing', 'Listening', 'Watching', 'Competing'
+  activity: 'B3Tickets' # This is the activity of the bot
+workingHours:
+  enabled: true # This is whether working hours are enabled or not
+  timeZone: 'Europe/London' # This is the time zone of the working hours
+  start: '09:00' # This is the start time of the working hours
+  end: '17:00' # This is the end time of the working hours
+alertSettings:
+  timeout: 2880 # This is the time in minutes before a ticket is automatically closed
+
+##############################################################################
+#                               Panel Settings                               #
+#                     These are the settings for the panel.                  #
+#                                                                            #
+#      panelColor: The color of the panel.                                   #
+#      panelTitle: The title of the panel.                                   #
+#      panelDescription: The description of the panel. You can use \n        #
+#                        to add a new line.                                  #
+#      dropdownPlaceholder: The placeholder of the dropdown.                 #
+#                                                                            #
+##############################################################################
+
+panelColor: '#695acd'
+panelTitle: 'Support Tickets'
+panelDescription: '> Select a category from the dropdown menu below to create a support ticket.'
+dropdownPlaceholder: 'Select ticket category'
+
+##############################################################################
+#                            Ticket Categories                              #
+# These are the categories that will be used to create tickets.              #
+#                                                                            #
+#      label: The label of the category.                                     #
+#      channelName: The name of the channel that will be created.            #
+#      value: The value of the category.                                     #
+#      description: The description of the category.                         #
+#      emoji: The emoji of the category.                                     #
+#      questions: The questions that will be asked in the ticket.            #
+#                                                                            #
+##############################################################################
+
+ticketCategories:
+  - label: 'General Support'
+    channelName: 'support-<username>'
+    value: 'general'
+    description: 'General questions and issues'
+    emoji: ''
+    supportRoles: ['123456789012345678', '123456789012345678'] # This is the role(s) that can see and manage tickets
+    questions:
+      - label: 'Describe your issue' # This is the title of the question
+        placeholder: 'Please provide details about your general inquiry' # This is the placeholder of the question
+        required: true # This is whether the question is required or not
+        answerType: 'paragraph' # This is the type of question. short for a small text box, paragraph for a large text box.
+
+messages:
+  embedColor: '#c9a2fc'
+  ticketCreated: |
+    🎫 **Ticket Created Successfully!**
+    
+    A staff member will be with you shortly.
+    Please provide as much detail as possible about your issue.
+  ticketClosed: |
+    🔒 **Ticket Closed**
+    
+    Thank you for using our support system!
+    If you need further assistance, feel free to create a new ticket.
+  ticketAlreadyExists: |
+    ⚠️ **Open Ticket Found**
+    
+    You already have an open ticket.
+    Please wait for a staff member to assist you there.
+  ticketNotOpen: |
+    ❌ **No Active Ticket**
+    
+    This command can only be used in ticket channels.
+    Please create a new ticket if you need assistance.
+  ticketAlreadyClosed: |
+    🔒 **Ticket Already Closed**
+    
+    This ticket has been closed.
+    Please create a new ticket if you need further assistance.
+  alertTitle: '🔔 Ticket Closure Alert'
+  alertDescription: |
+    {user} has requested to close this ticket.
+
+    If you are satisfied with the support provided,
+    please click the close button below to confirm.
+  alertCloseButton: 'Close Ticket'
+  alertCancelButton: 'Cancel'
+  alertCancelled: |
+    ✅ **Ticket Closure Cancelled**
+    
+    The ticket will remain open.
+    Feel free to continue the conversation.
+  alertError: |
+    ❌ **Error Occurred**
+    
+    There was an error processing your request.
+    Please try again or contact an administrator.
+  alertCancelledTitle: '✅ Ticket Closure Cancelled'
+
