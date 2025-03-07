@@ -26,7 +26,7 @@ export async function execute(interaction, client, settings) {
                             label: category.label,
                             description: category.description,
                             value: category.value,
-                            emoji: category.emoji || null
+                            emoji: category.emoji || undefined
                         }))
                     )
             );

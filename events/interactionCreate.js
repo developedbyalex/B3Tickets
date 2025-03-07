@@ -1,4 +1,4 @@
-import { Events, EmbedBuilder } from 'discord.js';
+import { Events, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } from 'discord.js';
 import { isWithinWorkingHours, getNextWorkingHours } from '../utils/workingHours.js';
 
 export const name = Events.InteractionCreate;
@@ -222,6 +222,58 @@ export async function execute(interaction, client, settings) {
                     return;
                 }
 
+                // Create and show the modal
+                const modal = new ModalBuilder()
+                    .setCustomId(`ticket_modal_${interaction.values[0]}`)
+                    .setTitle('Create Ticket');
+
+                const issueInput = new TextInputBuilder()
+                    .setCustomId('issue')
+                    .setLabel('Describe your issue')
+                    .setStyle(TextInputStyle.Paragraph)
+                    .setPlaceholder('Please provide as much detail as possible about your issue...')
+                    .setRequired(true)
+                    .setMaxLength(1000);
+
+                const firstActionRow = new ActionRowBuilder().addComponents(issueInput);
+                modal.addComponents(firstActionRow);
+
+                await interaction.showModal(modal);
+
+            } catch (error) {
+                console.error('Error showing ticket modal:', error);
+                const errorEmbed = {
+                    color: 0xFF0000,
+                    title: 'Error',
+                    description: 'There was an error creating your ticket. Please try again.',
+                    timestamp: new Date(),
+                    footer: {
+                        text: settings.transcripts.footer
+                    }
+                };
+
+                await interaction.reply({
+                    embeds: [errorEmbed],
+                    ephemeral: true
+                });
+            }
+        }
+    }
+
+    // Handle modal submissions
+    if (interaction.isModalSubmit()) {
+        if (interaction.customId.startsWith('ticket_modal_')) {
+            try {
+                const issue = interaction.fields.getTextInputValue('issue');
+                const categoryValue = interaction.customId.split('_')[2];
+                const selectedCategory = settings.ticketCategories.find(
+                    category => category.value === categoryValue
+                );
+
+                if (!selectedCategory) {
+                    throw new Error('Invalid category selected');
+                }
+
                 // Create the ticket channel
                 const channelName = selectedCategory.channelName.replace(
                     '<username>',
@@ -252,7 +304,7 @@ export async function execute(interaction, client, settings) {
                 const ticketEmbed = {
                     color: 0x695acd,
                     title: `Ticket: ${selectedCategory.label}`,
-                    description: `Welcome ${interaction.user}! Please describe your issue in detail.\n\n**Category:** ${selectedCategory.label}\n**Created by:** ${interaction.user.tag}`,
+                    description: `Welcome ${interaction.user}!\n\n**Category:** ${selectedCategory.label}\n**Created by:** ${interaction.user.tag}\n\n**Issue Description:**\n\`\`\`${issue}\`\`\``,
                     timestamp: new Date(),
                     footer: {
                         text: settings.transcripts.footer
@@ -289,7 +341,7 @@ export async function execute(interaction, client, settings) {
                     category: selectedCategory.value,
                     status: 'open',
                     createdAt: new Date(),
-                    issue: interaction.fields.getTextInputValue('issue')
+                    issue: issue
                 });
 
                 // Check if we're within working hours
@@ -314,11 +366,11 @@ export async function execute(interaction, client, settings) {
                     await ticketChannel.send({ embeds: [outOfHoursEmbed] });
                 }
 
-                // Send success message with issue
+                // Send success message
                 const successEmbed = {
                     color: 0x00ff00,
                     title: '🎫 Ticket Created Successfully!',
-                    description: `**Category:** ${selectedCategory.label}\n**Created by:** ${interaction.user}\n\n**Issue Description:**\n\`\`\`${interaction.fields.getTextInputValue('issue')}\`\`\`\n\nA staff member will be with you shortly.`,
+                    description: `**Category:** ${selectedCategory.label}\n**Created by:** ${interaction.user}\n\n**Issue Description:**\n\`\`\`${issue}\`\`\`\n\nA staff member will be with you shortly.`,
                     timestamp: new Date(),
                     footer: {
                         text: settings.transcripts.footer

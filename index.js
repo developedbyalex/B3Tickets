@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, Collection } from 'discord.js';
+import { Client, GatewayIntentBits, Collection, REST, Routes } from 'discord.js';
 import fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
@@ -33,6 +33,7 @@ client.logger = new Logger(client, settings);
 
 // Load commands
 const loadCommands = async () => {
+    const commands = [];
     const commandsPath = path.join(__dirname, 'commands');
     const commandFolders = fs.readdirSync(commandsPath);
 
@@ -46,11 +47,31 @@ const loadCommands = async () => {
 
             if ('data' in command && 'execute' in command) {
                 client.commands.set(command.data.name, command);
+                commands.push(command.data.toJSON());
                 console.log(`[COMMAND] Loaded command: ${command.data.name}`);
             } else {
                 console.warn(`[WARNING] Command at ${filePath} is missing required properties`);
             }
         }
+    }
+
+    return commands;
+};
+
+// Register commands with Discord
+const registerCommands = async (commands) => {
+    try {
+        console.log(`Started refreshing ${commands.length} application (/) commands.`);
+
+        const rest = new REST().setToken(settings.token);
+        const data = await rest.put(
+            Routes.applicationCommands(settings.clientId),
+            { body: commands },
+        );
+
+        console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+    } catch (error) {
+        console.error('[ERROR] Failed to register commands:', error);
     }
 };
 
@@ -108,35 +129,6 @@ const connectToDatabase = async () => {
     }
 };
 
-// Handle slash commands
-client.on('interactionCreate', async interaction => {
-    if (!interaction.isChatInputCommand()) return;
-
-    const command = client.commands.get(interaction.commandName);
-    if (!command) return;
-
-    try {
-        await command.execute(interaction, client, settings);
-    } catch (error) {
-        console.error(error);
-        const errorMessage = {
-            color: 0xFF0000,
-            title: 'Error',
-            description: 'There was an error executing this command!',
-            timestamp: new Date(),
-            footer: {
-                text: settings.messages.footer || 'B3Tickets'
-            }
-        };
-
-        if (interaction.replied || interaction.deferred) {
-            await interaction.followUp({ embeds: [errorMessage], ephemeral: true });
-        } else {
-            await interaction.reply({ embeds: [errorMessage], ephemeral: true });
-        }
-    }
-});
-
 // Ready event
 client.once('ready', () => {
     console.log(`[READY] Logged in as ${client.user.tag}`);
@@ -178,7 +170,8 @@ process.on('unhandledRejection', error => {
 const startBot = async () => {
     try {
         await connectToDatabase();
-        await loadCommands();
+        const commands = await loadCommands();
+        await registerCommands(commands);
         await loadEvents();
         await client.login(settings.token);
     } catch (error) {
