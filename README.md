@@ -10,7 +10,7 @@
 
 A powerful and feature-rich Discord ticket bot built with Discord.js v14
 
-[![Discord Banner](https://img.shields.io/discord/1234567890?color=7289da&label=Join%20Discord&logo=discord&logoColor=white&style=for-the-badge)](https://discord.byalex.gg/)
+[![Discord Banner](https://img.shields.io/discord/1225531121815781376?color=7289da&label=Join%20Discord&logo=discord&logoColor=white&style=for-the-badge)](https://discord.byalex.gg/)
 
 </div>
 
@@ -105,10 +105,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
