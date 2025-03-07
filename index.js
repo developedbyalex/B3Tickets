@@ -12,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Load settings
-const settings = yaml.load(fs.readFileSync('./settings.yml', 'utf8'));
+const settings = yaml.load(fs.readFileSync(path.join(__dirname, 'settings.yml'), 'utf8'));
 
 // Create Discord client
 const client = new Client({
@@ -42,7 +42,7 @@ const loadCommands = async () => {
 
         for (const file of commandFiles) {
             const filePath = path.join(folderPath, file);
-            const command = await import(filePath);
+            const command = await import(`file://${filePath}`);
 
             if ('data' in command && 'execute' in command) {
                 client.commands.set(command.data.name, command);
@@ -61,7 +61,7 @@ const loadEvents = async () => {
 
     for (const file of eventFiles) {
         const filePath = path.join(eventsPath, file);
-        const event = await import(filePath);
+        const event = await import(`file://${filePath}`);
 
         if (event.once) {
             client.once(event.name, (...args) => event.execute(...args, client, settings));

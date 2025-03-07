@@ -1,4 +1,4 @@
-import { Events } from 'discord.js';
+import { Events, EmbedBuilder } from 'discord.js';
 import { isWithinWorkingHours, getNextWorkingHours } from '../utils/workingHours.js';
 
 export const name = Events.InteractionCreate;
@@ -100,10 +100,15 @@ export async function execute(interaction, client, settings) {
                 );
 
                 // Send closing message
+                const closingMessage = settings.messages.ticketClosed.replace(
+                    '{Issue}',
+                    ticket.issue || 'No issue description available'
+                );
+
                 const closingEmbed = {
                     color: 0xff0000,
                     title: 'Ticket Closing',
-                    description: settings.messages.ticketClosed,
+                    description: closingMessage,
                     timestamp: new Date(),
                     footer: {
                         text: settings.transcripts.footer
@@ -254,7 +259,12 @@ export async function execute(interaction, client, settings) {
                     }
                 };
 
+                // Create the ping message with support roles and ticket creator
+                const supportRolePings = selectedCategory.supportRoles.map(roleId => `<@&${roleId}>`).join(' ');
+                const pingMessage = `${supportRolePings} ${interaction.user}`;
+
                 await ticketChannel.send({
+                    content: pingMessage,
                     embeds: [ticketEmbed],
                     components: [
                         {
@@ -278,7 +288,8 @@ export async function execute(interaction, client, settings) {
                     channelId: ticketChannel.id,
                     category: selectedCategory.value,
                     status: 'open',
-                    createdAt: new Date()
+                    createdAt: new Date(),
+                    issue: interaction.fields.getTextInputValue('issue')
                 });
 
                 // Check if we're within working hours
@@ -303,11 +314,11 @@ export async function execute(interaction, client, settings) {
                     await ticketChannel.send({ embeds: [outOfHoursEmbed] });
                 }
 
-                // Send success message
+                // Send success message with issue
                 const successEmbed = {
                     color: 0x00ff00,
-                    title: 'Success',
-                    description: settings.messages.ticketCreated,
+                    title: '🎫 Ticket Created Successfully!',
+                    description: `**Category:** ${selectedCategory.label}\n**Created by:** ${interaction.user}\n\n**Issue Description:**\n\`\`\`${interaction.fields.getTextInputValue('issue')}\`\`\`\n\nA staff member will be with you shortly.`,
                     timestamp: new Date(),
                     footer: {
                         text: settings.transcripts.footer

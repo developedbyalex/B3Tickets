@@ -2,14 +2,15 @@
 
 <div align="center">
 
-[![Discord](https://img.shields.io/discord/1225531121815781376?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.byalex.gg/)
+[![Discord](https://img.shields.io/discord/1234567890?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.byalex.gg/)
+[![GitHub](https://img.shields.io/github/license/developedbyalex/B3Tickets?color=7289da&label=License&logo=github&logoColor=white)](https://github.com/developedbyalex/B3Tickets/blob/main/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/developedbyalex/B3Tickets?color=7289da&label=Stars&logo=github&logoColor=white)](https://github.com/developedbyalex/B3Tickets/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/developedbyalex/B3Tickets?color=7289da&label=Issues&logo=github&logoColor=white)](https://github.com/developedbyalex/B3Tickets/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/developedbyalex/B3Tickets?color=7289da&label=Pull%20Requests&logo=github&logoColor=white)](https://github.com/developedbyalex/B3Tickets/pulls)
 
 A powerful and feature-rich Discord ticket bot built with Discord.js v14
 
-[![Discord Banner](https://img.shields.io/discord/1225531121815781376?color=7289da&label=Join%20Discord&logo=discord&logoColor=white&style=for-the-badge)](https://discord.byalex.gg/)
+[![Discord Banner](https://img.shields.io/discord/1234567890?color=7289da&label=Join%20Discord&logo=discord&logoColor=white&style=for-the-badge)](https://discord.byalex.gg/)
 
 </div>
 
@@ -104,6 +105,10 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
